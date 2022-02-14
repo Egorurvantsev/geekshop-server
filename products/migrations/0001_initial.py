@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=64)),
-                ('image', models.ImageField(blank=True, null=True, upload_to='products_mages')),
+                ('image', models.ImageField(blank=True, null=True, upload_to='products_images')),
                 ('text', models.TextField(max_length=128)),
                 ('price', models.DecimalField(decimal_places=2, default=0, max_digits=8)),
                 ('quantity', models.PositiveIntegerField(default=0)),

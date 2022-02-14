@@ -11,7 +11,7 @@ class ProductCategory(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=64)
-    image = models.ImageField(upload_to='products_mages', blank=True, null=True)
+    image = models.ImageField(upload_to='products_images', blank=True, null=True)
     text = models.TextField(max_length=128)
     price = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     quantity = models.PositiveIntegerField(default=0)
@@ -20,4 +20,3 @@ class Product(models.Model):
 
     def __str__(self):
         return f'Продукт: {self.name} | Категория: {self.category.name}'
-
