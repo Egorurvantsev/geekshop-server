@@ -1,5 +1,5 @@
 {% extends 'products/base.html' %}
-!/{% load static %}
+{% load static %}
 
 {% block css %}
     <link href="{% static 'css/products.css' %}" rel="stylesheet">
@@ -15,7 +15,7 @@
             <h1 class="my-4">GeekShop</h1>
             <div class="list-group">
                 {% for el in menu %}
-                <a href="#" class="list-group-item">{{ el }}</a>
+                <a href="#" class="list-group-item">{{ el.name }}</a>
                 {% endfor %}
             </div>
 
@@ -57,7 +57,7 @@
                     <div class="card h-100">
                         <a href="#">
                             <img class="card-img-top"
-                                 src="{% static prod.photo %}"
+                                 src="{{ prod.image.url }}"
                                  alt="">
                         </a>
                         <div class="card-body">
