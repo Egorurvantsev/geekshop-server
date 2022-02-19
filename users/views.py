@@ -23,7 +23,7 @@ def login(request):
 
 def registration(request):
     if request.method == 'POST':
-        form = UserRegistrationForm(request.POST, request.FILES)
+        form = UserRegistrationForm(data=request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, 'Регистрация прошла успешно!')
@@ -36,7 +36,13 @@ def registration(request):
     return render(request, 'users/registration.html', context)
 
 def profile(request):
-    form = UserProfileForm(instance=request.user)
+    if request.method == 'POST':
+        form = UserProfileForm(instance=request.user, files=request.FILES, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('users:profile'))
+    else:
+        form = UserProfileForm(instance=request.user)
     context = {
         'title': 'GeekShop - Профиль', 'form': form}
     return render(request, 'users/profile.html', context)
