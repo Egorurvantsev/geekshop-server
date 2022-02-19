@@ -2,7 +2,7 @@ from django.shortcuts import render, HttpResponseRedirect
 from django.contrib import auth, messages
 from django.urls import reverse
 
-from users.forms import UserLoginForm, UserRegistrationForm
+from users.forms import UserLoginForm, UserRegistrationForm, UserProfileForm
 
 def login(request):
     if request.method == 'POST':
@@ -36,8 +36,9 @@ def registration(request):
     return render(request, 'users/registration.html', context)
 
 def profile(request):
+    form = UserProfileForm(instance=request.user)
     context = {
-        'title': 'GeekShop - Профиль'}
+        'title': 'GeekShop - Профиль', 'form': form}
     return render(request, 'users/profile.html', context)
 
 def logout(request):
