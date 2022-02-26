@@ -42,16 +42,16 @@
                                         <td>{{ user.email }}</td>
                                         <td class="text-center">
                                             {% if user.is_staff %}
-                                                 <i class="fas fa-check-circle"></i>
+                                                 <i style='color: green' class="fas fa-check-circle"></i>
                                             {% else %}
-                                                 <i class="fas fa-times-circle"></i>
+                                                 <i style='color: red' class="fas fa-times-circle"></i>
                                             {% endif %}
                                         </td>
                                         <td class="text-center">
                                             {% if user.is_active %}
-                                                 <i class="fas fa-check-circle"></i>
+                                                 <i style='color: green' class="fas fa-check-circle"></i>
                                             {% else %}
-                                                 <i class="fas fa-times-circle"></i>
+                                                 <i style='color: red' class="fas fa-times-circle"></i>
                                             {% endif %}
                                         </td>
                                 </tr>
@@ -61,7 +61,7 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <a href="admin-users-create.html">
+                        <a href="{% url 'admin_staff:admin_users_create' %}">
                             <button class="btn btn-success">Создать пользователя</button>
                         </a>
                     </div>
