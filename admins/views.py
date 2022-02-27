@@ -4,18 +4,18 @@ from django.contrib import messages
 from users.models import User
 from admins.forms import UserAdminRegistrationForm, UserAdminProfileForm
 
-def index(request):
-    context = {
-        'title': 'GeekShop - Admin'
-    }
-    return render(request, 'admins/index.html', context)
+# #index
+# def index(request):
+#     context = {
+#         'title': 'GeekShop - Admin'
+#     }
+#     return render(request, 'admins/index.html', context)
 
 #Read
 def admin_users(request):
     context = {
         'title': 'GeekShop - Admin',
         'users': User.objects.all(),
-        'for': [0, 1]
     }
     return render(request, 'admins/admin-users-read.html', context)
 
@@ -44,6 +44,7 @@ def admin_users_update(request, pk):
         form = UserAdminProfileForm(instance=selected_user, files=request.FILES, data=request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Пользователь успешно редактирован.')
             return HttpResponseRedirect(reverse('admin_staff:admin_users'))
         else:
             print(form.errors)
@@ -54,3 +55,11 @@ def admin_users_update(request, pk):
         'title': 'GeekShop - Admin', 'form': form, 'selected_user': selected_user
     }
     return render(request, 'admins/admin-users-update-delete.html', context)
+
+#Delete
+def admin_users_delete(request, pk):
+    user = User.objects.get(id=pk)
+    user.is_active = False
+    user.save_delete()
+    messages.success(request, 'Пользователь успешно удален.')
+    return HttpResponseRedirect(reverse('admin_staff:admin_users'))
