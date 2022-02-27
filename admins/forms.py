@@ -1,6 +1,6 @@
 from django import forms
 
-from users.forms import UserRegistrationForm, User
+from users.forms import UserRegistrationForm, User, UserProfileForm
 
 
 class UserAdminRegistrationForm(UserRegistrationForm):
@@ -11,7 +11,6 @@ class UserAdminRegistrationForm(UserRegistrationForm):
         fields = ('username', 'email', 'first_name', 'last_name', 'password1', 'password2', 'image')
 
 
-    # def clean_username(self):
-    #     username = self.cleaned_data['username']
-    #     if User.objects.filter(username=username).exists():
-    #         raise ValueError
+class UserAdminProfileForm(UserProfileForm):
+    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control py-4'}))
+    email = forms.CharField(widget=forms.EmailInput(attrs={'class': 'form-control py-4'}))
