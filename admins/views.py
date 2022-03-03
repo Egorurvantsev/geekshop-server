@@ -1,44 +1,28 @@
 from django.shortcuts import render, HttpResponseRedirect
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
+from django.views.generic.list import ListView
+from django.views.generic.edit import CreateView
+
+
 from users.models import User
 from admins.forms import UserAdminRegistrationForm, UserAdminProfileForm
 
-# #index
-# def index(request):
-#     context = {
-#         'title': 'GeekShop - Admin'
-#     }
-#     return render(request, 'admins/index.html', context)
 
 #Read
-@user_passes_test(lambda u: u.is_staff)
-def admin_users(request):
-    context = {
-        'title': 'GeekShop - Admin',
-        'users': User.objects.all(),
-    }
-    return render(request, 'admins/admin-users-read.html', context)
+class UserAdminListViews(ListView):
+    model = User
+    template_name = 'admins/admin-users-read.html'
+
 
 #Create
-@user_passes_test(lambda u: u.is_staff)
-def admin_users_create(request):
-    if request.method == 'POST':
-        form = UserAdminRegistrationForm(data=request.POST, files=request.FILES)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Пользователь успешно создан.')
-            return HttpResponseRedirect(reverse('admin_staff:admin_users'))
-        else:
-            print(form.errors)
-    else:
-        form = UserAdminRegistrationForm()
-    context = {
-        'title': 'GeekShop - Admin',
-        'form': form
-    }
-    return render(request, 'admins/admin-users-create.html', context)
+class UserAdminCreateViews(CreateView):
+    model = User
+    template_name ='admins/admin-users-create.html'
+    form_class = UserAdminRegistrationForm
+    success_url = reverse_lazy('admin_staff:admin_users')
+
 
 #Update
 @user_passes_test(lambda u: u.is_staff)
@@ -68,3 +52,41 @@ def admin_users_delete(request, pk):
     user.save_delete()
     messages.success(request, 'Пользователь стал неактивным.')
     return HttpResponseRedirect(reverse('admin_staff:admin_users'))
+
+
+# #index
+# def index(request):
+#     context = {
+#         'title': 'GeekShop - Admin'
+#     }
+#     return render(request, 'admins/index.html', context)
+
+
+#Read
+# @user_passes_test(lambda u: u.is_staff)
+# def admin_users(request):
+#     context = {
+#         'title': 'GeekShop - Admin',
+#         'users': User.objects.all(),
+#     }
+#     return render(request, 'admins/admin-users-read.html', context)
+
+
+#Create
+# @user_passes_test(lambda u: u.is_staff)
+# def admin_users_create(request):
+#     if request.method == 'POST':
+#         form = UserAdminRegistrationForm(data=request.POST, files=request.FILES)
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, 'Пользователь успешно создан.')
+#             return HttpResponseRedirect(reverse('admin_staff:admin_users'))
+#         else:
+#             print(form.errors)
+#     else:
+#         form = UserAdminRegistrationForm()
+#     context = {
+#         'title': 'GeekShop - Admin',
+#         'form': form
+#     }
+#     return render(request, 'admins/admin-users-create.html', context)
