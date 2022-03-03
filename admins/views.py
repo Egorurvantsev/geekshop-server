@@ -3,7 +3,7 @@ from django.urls import reverse, reverse_lazy
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 
 from users.models import User
@@ -32,17 +32,11 @@ class UserAdminUpdateView(UpdateView):
     form_class = UserAdminProfileForm
 
 
-# class UserAdminDeleteView()
-
-
 #Delete
-@user_passes_test(lambda u: u.is_staff)
-def admin_users_delete(request, pk):
-    user = User.objects.get(id=pk)
-    user.is_active = False
-    user.save_delete()
-    messages.success(request, 'Пользователь стал неактивным.')
-    return HttpResponseRedirect(reverse('admin_staff:admin_users'))
+class UserAdminDeleteView(DeleteView):
+    model = User
+    template_name = 'admins/admin-users-update-delete.html'
+    success_url = reverse_lazy('admin_staff:admin_users')
 
 
 # #index
@@ -102,3 +96,13 @@ def admin_users_delete(request, pk):
 #         'title': 'GeekShop - Admin', 'form': form, 'selected_user': selected_user
 #     }
 #     return render(request, 'admins/admin-users-update-delete.html', context)
+
+
+#Delete
+@user_passes_test(lambda u: u.is_staff)
+def admin_users_delete(request, pk):
+    user = User.objects.get(id=pk)
+    user.is_active = False
+    user.save_delete()
+    messages.success(request, 'Пользователь стал неактивным.')
+    return HttpResponseRedirect(reverse('admin_staff:admin_users'))
