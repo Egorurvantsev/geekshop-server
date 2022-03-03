@@ -2,6 +2,7 @@ from django.shortcuts import render, HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
+from django.utils.decorators import method_decorator
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
@@ -20,6 +21,10 @@ class UserAdminListView(ListView):
         context['title'] = 'GeekShop - Admin'
         return context
 
+    @method_decorator(user_passes_test(lambda u: u.is_staff))
+    def dispatch(self, request, *args, **kwargs):
+        return super(UserAdminListView, self).dispatch(request, *args, **kwargs)
+
 #Create
 class UserAdminCreateView(CreateView):
     model = User
@@ -31,6 +36,10 @@ class UserAdminCreateView(CreateView):
         context = super(UserAdminCreateView, self).get_context_data(object_list=None, **kwargs)
         context['title'] = 'GeekShop - Admin'
         return context
+
+    @method_decorator(user_passes_test(lambda u: u.is_staff))
+    def dispatch(self, request, *args, **kwargs):
+        return super(UserAdminCreateView, self).dispatch(request, *args, **kwargs)
 
 
 #Update
@@ -44,6 +53,10 @@ class UserAdminUpdateView(UpdateView):
         context = super(UserAdminUpdateView, self).get_context_data(object_list=None, **kwargs)
         context['title'] = 'GeekShop - Admin'
         return context
+
+    @method_decorator(user_passes_test(lambda u: u.is_staff))
+    def dispatch(self, request, *args, **kwargs):
+        return super(UserAdminUpdateView, self).dispatch(request, *args, **kwargs)
 
 
 #Delete
